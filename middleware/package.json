@@ -1,0 +1,14 @@
+{
+  "name": "api-usage-monitor",
+  "version": "1.0.0",
+  "description": "Express middleware to track API usage and send metrics to the monitoring platform",
+  "main": "index.js",
+  "keywords": [
+    "express",
+    "middleware",
+    "api",
+    "monitoring",
+    "metrics"
+  ],
+  "license": "MIT"
+}

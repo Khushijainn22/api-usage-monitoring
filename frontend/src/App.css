@@ -1,0 +1,8 @@
+.app-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  color: var(--color-text-muted);
+}
