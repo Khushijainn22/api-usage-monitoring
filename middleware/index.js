@@ -53,27 +53,46 @@ function apiUsageMonitor(options = {}) {
 
   return (req, res, next) => {
     const start = Date.now();
+    let responseBytes = 0;
+
+    // Request size: from Content-Length (present when client sends a body)
+    const reqLen = req.headers['content-length'];
+    let requestSize = null;
+    if (reqLen !== undefined) {
+      const n = parseInt(reqLen, 10);
+      if (!Number.isNaN(n) && n >= 0) requestSize = n;
+    }
+
+    // Response size: count bytes written (Content-Length often missing with chunked encoding)
+    const origWrite = res.write;
+    const origEnd = res.end;
+    res.write = function (chunk, encoding, cb) {
+      if (chunk != null) {
+        const len = Buffer.isBuffer(chunk) ? chunk.length : Buffer.byteLength(chunk, encoding || 'utf8');
+        responseBytes += len;
+      }
+      return origWrite.apply(this, arguments);
+    };
+    res.end = function (chunk, encoding, cb) {
+      if (chunk != null) {
+        const len = Buffer.isBuffer(chunk) ? chunk.length : Buffer.byteLength(chunk, encoding || 'utf8');
+        responseBytes += len;
+      }
+      return origEnd.apply(this, arguments);
+    };
 
     res.on('finish', () => {
       const path = req.path || req.url?.split('?')[0] || '/';
       if (excludePaths.some((p) => path.startsWith(p))) return;
 
-      const reqLen = req.headers['content-length'];
-      const resLen = res.getHeader('Content-Length');
       const entry = {
         endpoint: path,
         method: req.method,
         statusCode: res.statusCode,
         responseTime: Date.now() - start,
       };
-      if (reqLen !== undefined) {
-        const n = parseInt(reqLen, 10);
-        if (!Number.isNaN(n) && n >= 0) entry.requestSize = n;
-      }
-      if (resLen !== undefined) {
-        const n = parseInt(resLen, 10);
-        if (!Number.isNaN(n) && n >= 0) entry.responseSize = n;
-      }
+      if (requestSize != null) entry.requestSize = requestSize;
+      if (responseBytes > 0) entry.responseSize = responseBytes;
       metrics.push(entry);
 
       if (metrics.length >= BATCH_SIZE) {
