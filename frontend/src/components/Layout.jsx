@@ -81,20 +81,13 @@ export default function Layout() {
         </div>
         <nav className="top-nav__links">
           <NavLink to="/" end className="top-nav__link">
-            <span className="top-nav__icon">📊</span>
-            Overview
+            Dashboard
           </NavLink>
           <NavLink to="/projects" className="top-nav__link">
-            <span className="top-nav__icon">📁</span>
-            Projects & Services
-          </NavLink>
-          <NavLink to="/usage" className="top-nav__link">
-            <span className="top-nav__icon">📈</span>
-            Usage
+            Projects
           </NavLink>
           {isAdmin && (
             <NavLink to="/users" className="top-nav__link">
-              <span className="top-nav__icon">👥</span>
               Users
             </NavLink>
           )}

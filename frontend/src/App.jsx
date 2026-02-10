@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
-import Usage from './pages/Usage';
 import Users from './pages/Users';
 import './App.css';
 
@@ -31,7 +30,6 @@ function AppRoutes() {
       >
         <Route index element={<Dashboard />} />
         <Route path="projects" element={<Projects />} />
-        <Route path="usage" element={<Usage />} />
         <Route path="users" element={<Users />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

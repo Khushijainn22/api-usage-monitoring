@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
-import InfoCard from '../components/InfoCard';
-import ProjectServiceExplainer from '../components/ProjectServiceExplainer';
 import './Projects.css';
 
 export default function Projects() {
@@ -50,7 +48,7 @@ export default function Projects() {
       await api.projects.create({ name: projectName.trim() });
       setProjectName('');
       setShowModal(false);
-      setSuccess('Project created');
+      setSuccess('Project created.');
       loadTree();
     } catch (err) {
       setError(err.message);
@@ -71,7 +69,7 @@ export default function Projects() {
       setServiceName('');
       setSelectedProjectId('');
       setNewApiKey(res.service?.apiKey || '');
-      setSuccess('Service created. Copy your API key below.');
+      setSuccess('Service created. Copy the API key below.');
       setShowModal(false);
       loadTree();
     } catch (err) {
@@ -85,18 +83,12 @@ export default function Projects() {
 
   return (
     <div className="projects-page">
-      <header className="page-header">
-        <div>
-          <h1>Projects</h1>
-          <p>Create a project for your backend, then add a service per deployment, region, or version. Each gets its own key — put that key in the app you're tracking.</p>
-          <p>Lost your key? Contact admin <strong>khushij2210@gmail.com</strong>.</p>
-        </div>
+      <header className="page-header page-header--compact">
+        <h1>Projects</h1>
         <button className="btn-primary" onClick={() => setShowModal(true)}>
-          + New project
+          New project
         </button>
       </header>
-
-      {/* <ProjectServiceExplainer /> */}
 
       {error && (
         <div className="alert alert-error" onClick={() => setError('')}>
@@ -119,7 +111,7 @@ export default function Projects() {
                   Copy
                 </button>
               </div>
-              <p className="api-key-note">Lost your key? Contact admin <strong>khushij2210@gmail.com</strong>.</p>
+              <p className="api-key-note">Store the key securely. Contact admin if lost.</p>
             </>
           )}
           <button className="alert-dismiss" onClick={() => { setSuccess(''); setNewApiKey(''); }}>
@@ -138,7 +130,6 @@ export default function Projects() {
             className={`project-card ${highlightedProjectId === project.id ? 'project-card-highlighted' : ''}`}
           >
             <div className="project-header">
-              <span className="project-icon">📁</span>
               <h3>{project.name}</h3>
             </div>
             <div className="project-services">
@@ -147,7 +138,6 @@ export default function Projects() {
               ) : (
                 project.services?.map((s) => (
                   <div key={s.id} className="service-item">
-                    <span className="service-dot">•</span>
                     {s.name}
                   </div>
                 ))
@@ -171,8 +161,8 @@ export default function Projects() {
 
       {tree.length === 0 && (
         <div className="empty-state">
-          <p className="empty-title">No projects yet</p>
-          <p>Create a project first, then add services to get API keys.</p>
+          <p className="empty-title">No projects</p>
+          <p>Add a project, then add services to obtain API keys.</p>
         </div>
       )}
 

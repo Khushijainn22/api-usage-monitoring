@@ -23,13 +23,13 @@
 }
 
 .filter-select {
-  padding: 10px 18px;
-  background: rgba(15, 23, 42, 0.6);
+  padding: 8px 14px;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
   color: var(--color-text);
-  min-width: 160px;
+  min-width: 140px;
 }
 
 .filter-select:focus {
@@ -75,14 +75,14 @@
 }
 
 .range-btn {
-  padding: 10px 18px;
-  background: transparent;
+  padding: 8px 14px;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-text-muted);
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .range-btn:hover {
@@ -104,12 +104,12 @@
 }
 
 .usage-section {
-  background: var(--gradient-card);
+  background: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
   border: 1px solid var(--color-border);
   margin-bottom: var(--spacing-xl);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 
@@ -158,7 +158,7 @@
 }
 
 .trend-chart__scroll::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: var(--color-border-subtle);
   border-radius: 4px;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .trend-chart__scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--color-text-dim);
 }
 
 .trend-chart__body {
@@ -197,9 +197,9 @@
 }
 
 .trend-bar {
-  width: 36px;
+  width: 32px;
   min-height: 4px;
-  background: var(--gradient-accent);
+  background: var(--color-accent);
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   transition: height 0.3s;
 }
@@ -271,14 +271,14 @@
 }
 
 .pagination-btn {
-  padding: 8px 16px;
-  background: rgba(15, 23, 42, 0.6);
+  padding: 6px 14px;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--color-text);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -325,8 +325,8 @@
 }
 
 .endpoint-path {
-  font-family: 'JetBrains Mono', 'SF Mono', monospace;
-  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   color: var(--color-text);
 }
 
@@ -339,28 +339,28 @@
 }
 
 .method-get {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
+  background: rgba(21, 128, 61, 0.12);
+  color: var(--color-success);
 }
 
 .method-post {
-  background: rgba(96, 165, 250, 0.2);
-  color: #60a5fa;
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
 }
 
 .method-put {
-  background: rgba(251, 191, 36, 0.2);
-  color: #fbbf24;
+  background: rgba(161, 98, 7, 0.12);
+  color: var(--color-warning);
 }
 
 .method-delete {
-  background: rgba(248, 113, 113, 0.2);
-  color: #f87171;
+  background: rgba(185, 28, 28, 0.12);
+  color: var(--color-error);
 }
 
 .method-patch {
-  background: rgba(167, 139, 250, 0.2);
-  color: #a78bfa;
+  background: rgba(124, 58, 237, 0.12);
+  color: #6d28d9;
 }
 
 .error-rate {

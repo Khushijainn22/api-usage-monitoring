@@ -1,7 +1,7 @@
 .app-logo {
   font-family: var(--font-logo);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   white-space: nowrap;
 }
 
@@ -10,31 +10,27 @@
 }
 
 .app-logo--nav .app-logo__api {
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+  color: var(--color-accent);
+  font-weight: 700;
 }
 
 .app-logo--nav .app-logo__usage,
 .app-logo--nav .app-logo__monitor {
   color: var(--color-text);
+  font-weight: 600;
 }
 
 .app-logo--auth {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
 }
 
 .app-logo--auth .app-logo__api {
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+  color: var(--color-accent);
+  font-weight: 700;
 }
 
 .app-logo--auth .app-logo__usage,
 .app-logo--auth .app-logo__monitor {
   color: var(--color-text);
+  font-weight: 600;
 }
