@@ -1,4 +1,4 @@
-# Add API Usage Monitor to Your App
+# INTEGRATE API Usage Monitor
 
 ## 1. Install
 
@@ -24,4 +24,4 @@ app.use(apiUsageMonitor({
 API_USAGE_API_KEY=your_api_key_from_platform
 ```
 
-Get the key: sign up at the platform → Projects → Add service → copy API key.
+To get the key: sign up at the platform [https://api-usage-monitoring.vercel.app] → Projects → Add service → copy API key.

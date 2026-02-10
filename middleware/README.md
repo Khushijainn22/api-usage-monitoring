@@ -2,7 +2,7 @@
 
 Express middleware: send API request metrics to the monitoring platform.
 
-**Platform:** https://api-usage-monitoring-ccln1wd92-khushi-jains-projects-cedcb167.vercel.app (sign up, create a project/service, copy API key)
+**Platform:** https://api-usage-monitoring.vercel.app (sign up, create a project/service, copy API key)
 
 ## Install
 
