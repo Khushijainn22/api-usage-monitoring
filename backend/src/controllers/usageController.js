@@ -110,18 +110,33 @@ async function getSummary(req, res) {
   }
 }
 
+const ENDPOINT_SORT_FIELDS = [
+  'endpoint',
+  'method',
+  'requestCount',
+  'avgResponseTimeMs',
+  'minResponseTimeMs',
+  'maxResponseTimeMs',
+  'errorRate',
+  'successCount',
+  'clientErrorCount',
+  'serverErrorCount',
+  'lastHit',
+  'avgRequestSize',
+  'avgResponseSize',
+];
+
 /**
  * GET /api/usage/endpoints
- * Query: page, limit, sortBy (endpoint|method|requestCount|avgResponseTimeMs|errorRate), sortOrder (asc|desc)
+ * Returns per-endpoint metrics: counts, latency (avg/min/max), status breakdown (2xx/4xx/5xx),
+ * lastHit, optional sizes. No PII or request/response content.
  */
 async function getEndpoints(req, res) {
   try {
     const { from, to } = getTimeRange(req.query);
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const limit = Math.min(Math.max(1, parseInt(req.query.limit, 10) || 10), 100);
-    const sortBy = ['endpoint', 'method', 'requestCount', 'avgResponseTimeMs', 'errorRate'].includes(
-      req.query.sortBy
-    )
+    const sortBy = ENDPOINT_SORT_FIELDS.includes(req.query.sortBy)
       ? req.query.sortBy
       : 'requestCount';
     const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
@@ -142,9 +157,46 @@ async function getEndpoints(req, res) {
           _id: { endpoint: '$endpoint', method: '$method' },
           requestCount: { $sum: '$requestCount' },
           avgResponseTime: { $avg: '$responseTime' },
-          errorCount: {
+          minResponseTime: { $min: '$responseTime' },
+          maxResponseTime: { $max: '$responseTime' },
+          lastHit: { $max: '$timestamp' },
+          successCount: {
             $sum: {
-              $cond: [{ $gte: ['$statusCode', 400] }, '$requestCount', 0],
+              $cond: [
+                { $and: [{ $gte: ['$statusCode', 200] }, { $lt: ['$statusCode', 300] }] },
+                '$requestCount',
+                0,
+              ],
+            },
+          },
+          clientErrorCount: {
+            $sum: {
+              $cond: [
+                { $and: [{ $gte: ['$statusCode', 400] }, { $lt: ['$statusCode', 500] }] },
+                '$requestCount',
+                0,
+              ],
+            },
+          },
+          serverErrorCount: {
+            $sum: {
+              $cond: [{ $gte: ['$statusCode', 500] }, '$requestCount', 0],
+            },
+          },
+          totalRequestSize: {
+            $sum: { $multiply: [{ $ifNull: ['$requestSize', 0] }, '$requestCount'] },
+          },
+          sizeRequestCount: {
+            $sum: {
+              $cond: [{ $gt: [{ $ifNull: ['$requestSize', 0] }, 0] }, '$requestCount', 0],
+            },
+          },
+          totalResponseSize: {
+            $sum: { $multiply: [{ $ifNull: ['$responseSize', 0] }, '$requestCount'] },
+          },
+          sizeResponseCount: {
+            $sum: {
+              $cond: [{ $gt: [{ $ifNull: ['$responseSize', 0] }, 0] }, '$requestCount', 0],
             },
           },
         },
@@ -155,14 +207,52 @@ async function getEndpoints(req, res) {
           method: '$_id.method',
           requestCount: 1,
           avgResponseTimeMs: { $round: ['$avgResponseTime', 0] },
-          errorCount: 1,
+          minResponseTimeMs: { $round: ['$minResponseTime', 0] },
+          maxResponseTimeMs: { $round: ['$maxResponseTime', 0] },
+          lastHit: 1,
+          successCount: 1,
+          clientErrorCount: 1,
+          serverErrorCount: 1,
+          errorCount: { $add: ['$clientErrorCount', '$serverErrorCount'] },
           errorRate: {
             $cond: [
               { $eq: ['$requestCount', 0] },
               0,
-              { $multiply: [{ $divide: ['$errorCount', '$requestCount'] }, 100] },
+              {
+                $multiply: [
+                  {
+                    $divide: [
+                      { $add: ['$clientErrorCount', '$serverErrorCount'] },
+                      '$requestCount',
+                    ],
+                  },
+                  100,
+                ],
+              },
             ],
           },
+          avgRequestSize: {
+            $cond: [
+              { $gt: ['$sizeRequestCount', 0] },
+              { $round: [{ $divide: ['$totalRequestSize', '$sizeRequestCount'] }, 0] },
+              null,
+            ],
+          },
+          avgResponseSize: {
+            $cond: [
+              { $gt: ['$sizeResponseCount', 0] },
+              { $round: [{ $divide: ['$totalResponseSize', '$sizeResponseCount'] }, 0] },
+              null,
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          totalRequestSize: 0,
+          totalResponseSize: 0,
+          sizeRequestCount: 0,
+          sizeResponseCount: 0,
         },
       },
       {

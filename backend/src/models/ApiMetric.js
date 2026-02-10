@@ -19,6 +19,8 @@ const apiMetricSchema = new mongoose.Schema({
     type: String,
     required: true,
     index: true,
+    maxlength: 2048,
+    trim: true,
   },
   method: {
     type: String,
@@ -39,6 +41,9 @@ const apiMetricSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  // Optional: bytes (safe for capacity planning; no body content)
+  requestSize: { type: Number, min: 0 },
+  responseSize: { type: Number, min: 0 },
 });
 
 // Compound indexes for common queries

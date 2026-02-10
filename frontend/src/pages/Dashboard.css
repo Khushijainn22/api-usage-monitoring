@@ -43,6 +43,26 @@
   margin-bottom: var(--spacing-md);
 }
 
+.traffic-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+
+.traffic-section-header .dashboard-section-title {
+  margin-bottom: 0;
+}
+
+.traffic-timezone {
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .tree-section-header {
   display: flex;
   align-items: center;

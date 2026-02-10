@@ -42,6 +42,19 @@ const validateIngest = (req, res, next) => {
       return false;
     }
 
+    if (m.requestSize !== undefined) {
+      if (typeof m.requestSize !== 'number' || m.requestSize < 0) {
+        errors.push(`Metric at index ${idx}: requestSize must be a non-negative number`);
+        return false;
+      }
+    }
+    if (m.responseSize !== undefined) {
+      if (typeof m.responseSize !== 'number' || m.responseSize < 0) {
+        errors.push(`Metric at index ${idx}: responseSize must be a non-negative number`);
+        return false;
+      }
+    }
+
     return true;
   });
 
@@ -53,14 +66,22 @@ const validateIngest = (req, res, next) => {
     });
   }
 
-  // Normalize and attach to request
-  req.validatedMetrics = validatedMetrics.map((m) => ({
-    endpoint: String(m.endpoint),
-    method: m.method.toUpperCase(),
-    statusCode: m.statusCode,
-    responseTime: m.responseTime,
-    requestCount: typeof m.requestCount === 'number' && m.requestCount > 0 ? m.requestCount : 1,
-  }));
+  const ENDPOINT_MAX_LEN = 2048;
+
+  // Normalize and attach to request (no PII: endpoint path only, no query/body/tokens)
+  req.validatedMetrics = validatedMetrics.map((m) => {
+    const endpoint = String(m.endpoint).trim().slice(0, ENDPOINT_MAX_LEN);
+    const out = {
+      endpoint,
+      method: m.method.toUpperCase(),
+      statusCode: m.statusCode,
+      responseTime: m.responseTime,
+      requestCount: typeof m.requestCount === 'number' && m.requestCount > 0 ? m.requestCount : 1,
+    };
+    if (typeof m.requestSize === 'number' && m.requestSize >= 0) out.requestSize = Math.round(m.requestSize);
+    if (typeof m.responseSize === 'number' && m.responseSize >= 0) out.responseSize = Math.round(m.responseSize);
+    return out;
+  });
 
   if (errors.length > 0) {
     req.validationWarnings = errors;

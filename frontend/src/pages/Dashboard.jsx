@@ -46,27 +46,85 @@ function getDummyData(range) {
     },
     trends,
     endpoints: [
-      { endpoint: "/api/users", method: "GET", requestCount: 4520, avgResponseTimeMs: 89, errorRate: 0.1 },
-      { endpoint: "/api/products", method: "GET", requestCount: 3200, avgResponseTimeMs: 156, errorRate: 0 },
-      { endpoint: "/api/auth/login", method: "POST", requestCount: 1800, avgResponseTimeMs: 234, errorRate: 0.5 },
-      { endpoint: "/api/orders", method: "POST", requestCount: 980, avgResponseTimeMs: 312, errorRate: 1.2 },
-      { endpoint: "/api/cart", method: "GET", requestCount: 2100, avgResponseTimeMs: 45, errorRate: 0 },
-      { endpoint: "/api/health", method: "GET", requestCount: 1500, avgResponseTimeMs: 12, errorRate: 0 },
-      { endpoint: "/api/search", method: "GET", requestCount: 890, avgResponseTimeMs: 178, errorRate: 0.3 },
-      { endpoint: "/api/admin/users", method: "GET", requestCount: 420, avgResponseTimeMs: 98, errorRate: 0 },
-      { endpoint: "/api/webhooks", method: "POST", requestCount: 650, avgResponseTimeMs: 45, errorRate: 0.2 },
-      { endpoint: "/api/export", method: "GET", requestCount: 120, avgResponseTimeMs: 890, errorRate: 0 },
-      { endpoint: "/api/config", method: "GET", requestCount: 380, avgResponseTimeMs: 34, errorRate: 0 },
-      { endpoint: "/api/notifications", method: "POST", requestCount: 210, avgResponseTimeMs: 156, errorRate: 0.5 },
-      { endpoint: "/api/analytics", method: "GET", requestCount: 95, avgResponseTimeMs: 420, errorRate: 0 },
-      { endpoint: "/api/reports", method: "GET", requestCount: 75, avgResponseTimeMs: 1200, errorRate: 0 },
-      { endpoint: "/api/docs", method: "GET", requestCount: 340, avgResponseTimeMs: 28, errorRate: 0 },
+      { endpoint: "/api/users", method: "GET", requestCount: 4520, successCount: 4480, clientErrorCount: 35, serverErrorCount: 5, avgResponseTimeMs: 89, minResponseTimeMs: 12, maxResponseTimeMs: 420, errorRate: 0.1, lastHit: now.toISOString(), avgRequestSize: 120, avgResponseSize: 1024 },
+      { endpoint: "/api/products", method: "GET", requestCount: 3200, successCount: 3200, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 156, minResponseTimeMs: 45, maxResponseTimeMs: 890, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: 0, avgResponseSize: 2048 },
+      { endpoint: "/api/auth/login", method: "POST", requestCount: 1800, successCount: 1791, clientErrorCount: 9, serverErrorCount: 0, avgResponseTimeMs: 234, minResponseTimeMs: 89, maxResponseTimeMs: 1200, errorRate: 0.5, lastHit: now.toISOString(), avgRequestSize: 256, avgResponseSize: 512 },
+      { endpoint: "/api/orders", method: "POST", requestCount: 980, successCount: 968, clientErrorCount: 10, serverErrorCount: 2, avgResponseTimeMs: 312, minResponseTimeMs: 120, maxResponseTimeMs: 2100, errorRate: 1.2, lastHit: now.toISOString(), avgRequestSize: 420, avgResponseSize: 180 },
+      { endpoint: "/api/cart", method: "GET", requestCount: 2100, successCount: 2100, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 45, minResponseTimeMs: 8, maxResponseTimeMs: 340, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 320 },
+      { endpoint: "/api/health", method: "GET", requestCount: 1500, successCount: 1500, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 12, minResponseTimeMs: 2, maxResponseTimeMs: 45, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 12 },
+      { endpoint: "/api/search", method: "GET", requestCount: 890, successCount: 887, clientErrorCount: 3, serverErrorCount: 0, avgResponseTimeMs: 178, minResponseTimeMs: 34, maxResponseTimeMs: 560, errorRate: 0.3, lastHit: now.toISOString(), avgRequestSize: 80, avgResponseSize: 4096 },
+      { endpoint: "/api/admin/users", method: "GET", requestCount: 420, successCount: 420, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 98, minResponseTimeMs: 28, maxResponseTimeMs: 280, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 512 },
+      { endpoint: "/api/webhooks", method: "POST", requestCount: 650, successCount: 649, clientErrorCount: 1, serverErrorCount: 0, avgResponseTimeMs: 45, minResponseTimeMs: 12, maxResponseTimeMs: 120, errorRate: 0.2, lastHit: now.toISOString(), avgRequestSize: 1024, avgResponseSize: 0 },
+      { endpoint: "/api/export", method: "GET", requestCount: 120, successCount: 120, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 890, minResponseTimeMs: 340, maxResponseTimeMs: 3200, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 524288 },
+      { endpoint: "/api/config", method: "GET", requestCount: 380, successCount: 380, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 34, minResponseTimeMs: 8, maxResponseTimeMs: 120, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 256 },
+      { endpoint: "/api/notifications", method: "POST", requestCount: 210, successCount: 209, clientErrorCount: 0, serverErrorCount: 1, avgResponseTimeMs: 156, minResponseTimeMs: 45, maxResponseTimeMs: 890, errorRate: 0.5, lastHit: now.toISOString(), avgRequestSize: 180, avgResponseSize: 64 },
+      { endpoint: "/api/analytics", method: "GET", requestCount: 95, successCount: 95, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 420, minResponseTimeMs: 120, maxResponseTimeMs: 2100, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 8192 },
+      { endpoint: "/api/reports", method: "GET", requestCount: 75, successCount: 75, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 1200, minResponseTimeMs: 450, maxResponseTimeMs: 4500, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 65536 },
+      { endpoint: "/api/docs", method: "GET", requestCount: 340, successCount: 340, clientErrorCount: 0, serverErrorCount: 0, avgResponseTimeMs: 28, minResponseTimeMs: 5, maxResponseTimeMs: 89, errorRate: 0, lastHit: now.toISOString(), avgRequestSize: null, avgResponseSize: 4096 },
     ],
   };
 }
 
 const ENDPOINTS_PAGE_SIZE = 10;
-const SORT_COLUMNS = ["endpoint", "method", "requestCount", "avgResponseTimeMs", "errorRate"];
+const ENDPOINT_COLUMNS = [
+  { key: "endpoint", label: "Endpoint", sortable: true },
+  { key: "method", label: "Method", sortable: true },
+  { key: "requestCount", label: "Requests", sortable: true },
+  { key: "successCount", label: "2xx", sortable: true, title: "Successful responses" },
+  { key: "clientErrorCount", label: "4xx", sortable: true, title: "Client errors" },
+  { key: "serverErrorCount", label: "5xx", sortable: true, title: "Server errors" },
+  { key: "avgResponseTimeMs", label: "Avg (ms)", sortable: true, title: "Average response time in milliseconds" },
+  { key: "minResponseTimeMs", label: "Min (ms)", sortable: true, title: "Minimum response time" },
+  { key: "maxResponseTimeMs", label: "Max (ms)", sortable: true, title: "Maximum response time" },
+  { key: "errorRate", label: "Error %", sortable: true, title: "Percentage of requests that returned 4xx or 5xx" },
+  { key: "lastHit", label: "Last hit", sortable: true, title: "When this endpoint was last called" },
+  { key: "avgRequestSize", label: "Request size", sortable: true, title: "Average request body size (bytes)" },
+  { key: "avgResponseSize", label: "Response size", sortable: true, title: "Average response body size (bytes)" },
+];
+
+function formatEndpointCell(col, value, row) {
+  if (value == null && col.key !== "endpoint") return "—";
+  switch (col.key) {
+    case "method":
+      return (
+        <span className={`method-badge method-${(value || "").toLowerCase()}`}>
+          {value}
+        </span>
+      );
+    case "endpoint":
+      return <span className="endpoint-path">{value}</span>;
+    case "requestCount":
+    case "successCount":
+    case "clientErrorCount":
+    case "serverErrorCount":
+      return (value ?? 0).toLocaleString();
+    case "avgResponseTimeMs":
+    case "minResponseTimeMs":
+    case "maxResponseTimeMs":
+      return value ?? "—";
+    case "errorRate":
+      return (
+        <span className={(row?.errorRate > 0 ? "error-rate" : "")}>
+          {(value ?? 0).toFixed(1)}%
+        </span>
+      );
+    case "lastHit":
+      if (!value) return "—";
+      const d = new Date(value);
+      const now = Date.now();
+      const diff = (now - d) / 1000;
+      if (diff < 60) return "now";
+      if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+      return d.toLocaleDateString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    case "avgRequestSize":
+    case "avgResponseSize":
+      if (value == null || value === 0) return "—";
+      return value >= 1024 ? `${(value / 1024).toFixed(1)}K` : String(value);
+    default:
+      return String(value ?? "");
+  }
+}
 
 export default function Dashboard() {
   const [range, setRange] = useState("24h");
@@ -253,7 +311,12 @@ export default function Dashboard() {
       </div>
 
       <section className="usage-section">
-        <h2 className="dashboard-section-title">Traffic</h2>
+        <div className="traffic-section-header">
+          <h2 className="dashboard-section-title">Traffic</h2>
+          <span className="traffic-timezone" title="Chart times use your browser’s timezone">
+            {Intl.DateTimeFormat().resolvedOptions().timeZone}
+          </span>
+        </div>
         {isDemoData && (
           <p className="demo-badge">Demo data — integrate middleware for live metrics.</p>
         )}
@@ -314,30 +377,29 @@ export default function Dashboard() {
               <table className="endpoints-table">
                 <thead>
                   <tr>
-                    {SORT_COLUMNS.map((col) => (
+                    {ENDPOINT_COLUMNS.map((col) => (
                       <th
-                        key={col}
-                        className="endpoints-th-sortable"
-                        onClick={() => {
-                          if (endpointsSortBy === col) {
-                            setEndpointsSortOrder((o) => (o === "asc" ? "desc" : "asc"));
-                          } else {
-                            setEndpointsSortBy(col);
-                            setEndpointsSortOrder(
-                              ["endpoint", "method"].includes(col) ? "asc" : "desc"
-                            );
-                          }
-                          setEndpointsPage(1);
-                        }}
+                        key={col.key}
+                        className={col.sortable ? "endpoints-th-sortable" : ""}
+                        title={col.title}
+                        onClick={
+                          col.sortable
+                            ? () => {
+                                if (endpointsSortBy === col.key) {
+                                  setEndpointsSortOrder((o) => (o === "asc" ? "desc" : "asc"));
+                                } else {
+                                  setEndpointsSortBy(col.key);
+                                  setEndpointsSortOrder(
+                                    ["endpoint", "method"].includes(col.key) ? "asc" : "desc"
+                                  );
+                                }
+                                setEndpointsPage(1);
+                              }
+                            : undefined
+                        }
                       >
-                        {col === "avgResponseTimeMs"
-                          ? "Avg (ms)"
-                          : col === "requestCount"
-                            ? "Requests"
-                            : col === "errorRate"
-                              ? "Error %"
-                              : col.charAt(0).toUpperCase() + col.slice(1)}
-                        {endpointsSortBy === col && (
+                        {col.label}
+                        {col.sortable && endpointsSortBy === col.key && (
                           <span className="sort-arrow">
                             {endpointsSortOrder === "asc" ? " ↑" : " ↓"}
                           </span>
@@ -349,19 +411,11 @@ export default function Dashboard() {
                 <tbody>
                   {endpoints.map((e, i) => (
                     <tr key={i}>
-                      <td className="endpoint-path">{e.endpoint}</td>
-                      <td>
-                        <span className={`method-badge method-${e.method?.toLowerCase()}`}>
-                          {e.method}
-                        </span>
-                      </td>
-                      <td>{e.requestCount?.toLocaleString()}</td>
-                      <td>{e.avgResponseTimeMs}</td>
-                      <td>
-                        <span className={e.errorRate > 0 ? "error-rate" : ""}>
-                          {e.errorRate?.toFixed(1)}%
-                        </span>
-                      </td>
+                      {ENDPOINT_COLUMNS.map((col) => (
+                        <td key={col.key} className={col.key === "endpoint" ? "endpoint-path" : ""}>
+                          {formatEndpointCell(col, e[col.key], e)}
+                        </td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>

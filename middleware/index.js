@@ -58,12 +58,23 @@ function apiUsageMonitor(options = {}) {
       const path = req.path || req.url?.split('?')[0] || '/';
       if (excludePaths.some((p) => path.startsWith(p))) return;
 
-      metrics.push({
+      const reqLen = req.headers['content-length'];
+      const resLen = res.getHeader('Content-Length');
+      const entry = {
         endpoint: path,
         method: req.method,
         statusCode: res.statusCode,
         responseTime: Date.now() - start,
-      });
+      };
+      if (reqLen !== undefined) {
+        const n = parseInt(reqLen, 10);
+        if (!Number.isNaN(n) && n >= 0) entry.requestSize = n;
+      }
+      if (resLen !== undefined) {
+        const n = parseInt(resLen, 10);
+        if (!Number.isNaN(n) && n >= 0) entry.responseSize = n;
+      }
+      metrics.push(entry);
 
       if (metrics.length >= BATCH_SIZE) {
         flush(apiKey, ingestionUrl);
