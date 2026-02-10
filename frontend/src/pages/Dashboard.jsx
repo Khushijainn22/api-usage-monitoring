@@ -78,9 +78,18 @@ const ENDPOINT_COLUMNS = [
   { key: "maxResponseTimeMs", label: "Max (ms)", sortable: true, title: "Maximum response time" },
   { key: "errorRate", label: "Error %", sortable: true, title: "Percentage of requests that returned 4xx or 5xx" },
   { key: "lastHit", label: "Last hit", sortable: true, title: "When this endpoint was last called" },
-  { key: "avgRequestSize", label: "Request size", sortable: true, title: "Average request body size (bytes)" },
-  { key: "avgResponseSize", label: "Response size", sortable: true, title: "Average response body size (bytes)" },
+  { key: "avgRequestSize", label: "Request size", sortable: true, title: "Average size of request body (B/KB/MB) per request" },
+  { key: "avgResponseSize", label: "Response size", sortable: true, title: "Average size of response body (B/KB/MB) per request" },
 ];
+
+function formatBytes(bytes) {
+  if (bytes == null || bytes === 0) return "—";
+  const n = Number(bytes);
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  if (n < 1024 * 1024 * 1024) return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(n / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+}
 
 function formatEndpointCell(col, value, row) {
   if (value == null && col.key !== "endpoint") return "—";
@@ -119,8 +128,7 @@ function formatEndpointCell(col, value, row) {
       return d.toLocaleDateString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     case "avgRequestSize":
     case "avgResponseSize":
-      if (value == null || value === 0) return "—";
-      return value >= 1024 ? `${(value / 1024).toFixed(1)}K` : String(value);
+      return formatBytes(value);
     default:
       return String(value ?? "");
   }
